@@ -26,3 +26,4 @@ output "bucket_url" {
   description = "The URL of the created bucket"
   value       = google_storage_bucket.testing_bucket.url
 }
+# command to create resource : gcloud storage buckets create gs://testing_bucket_abhilasha_sps --location=EU --project=sps-abhilasha
