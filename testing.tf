@@ -1,33 +1,28 @@
+# Configure the Google Cloud provider
 provider "google" {
-  project = "disablevpcinternalipv6"
-  region  = "us-east1"
+  project = "sps-abhilasha" # Or use your project number: "119314789570"
 }
 
-resource "google_compute_subnetwork" "good_subnetwork_ipv4_only_with_external_access" {
-  name          = "good-subnetwork-ipv4-only-with-external-access"
+# Define the Google Cloud Storage bucket
+resource "google_storage_bucket" "testing_bucket" {
+  name          = "testing_bucket_abhilasha_sps"
+  location      = "EU" # Required by customConstraints/custom.fixedBucketLocation5bb08ae9
+  # Optional: Set a storage class, e.g., "STANDARD"
+  storage_class = "STANDARD"
 
-  ip_cidr_range = "10.0.0.0/22"
-  region        = "us-west2"
+  # Optional: Enable uniform bucket-level access
+  uniform_bucket_level_access = true
 
-  stack_type       = "IPV4_ONLY"
-  ipv6_access_type = "EXTERNAL"
-
-  network       = google_compute_network.custom-test.id
+  # Optional: Prevent accidental deletion if the bucket contains objects
+  force_destroy = false
 }
 
-resource "google_compute_subnetwork" "bad_subnetwork_ipv6_with_external_access" {
-  name          = "bad-subnetwork-ipv6-with-external-access"
-
-  ip_cidr_range = "10.0.0.0/22"
-  region        = "us-west2"
-
-  stack_type       = "IPV4_IPV6"
-  ipv6_access_type = "INTERNAL"
-
-  network       = google_compute_network.custom-test.id
+output "bucket_self_link" {
+  description = "The self link of the created bucket"
+  value       = google_storage_bucket.testing_bucket.self_link
 }
 
-resource "google_compute_network" "custom-test" {
-  name                    = "ipv6-test-network"
-  auto_create_subnetworks = false
+output "bucket_url" {
+  description = "The URL of the created bucket"
+  value       = google_storage_bucket.testing_bucket.url
 }
