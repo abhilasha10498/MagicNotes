@@ -6,6 +6,7 @@ provider "google" {
 # Define the Google Cloud Storage bucket
 resource "google_storage_bucket" "testing_bucket" {
   name          = "testing_bucket_abhilasha_sps"
+  project       = "sps-abhilasha"
   location      = "EU" # Required by customConstraints/custom.fixedBucketLocation5bb08ae9
   # Optional: Set a storage class, e.g., "STANDARD"
   storage_class = "STANDARD"
